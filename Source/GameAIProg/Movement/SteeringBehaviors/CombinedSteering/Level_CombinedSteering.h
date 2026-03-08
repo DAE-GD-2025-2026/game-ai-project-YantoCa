@@ -32,5 +32,11 @@ private:
 	bool UseMouseTarget = false;
 	bool CanDebugRender = false;
 
+	ASteeringAgent* SeekAgent = nullptr;
+	ASteeringAgent* WanderAgent = nullptr;
 	
+	TUniquePtr<Seek> SeekBehaviour{};
+	TUniquePtr<Evade> EvadeBehaviour{};
+	TUniquePtr<Wander> WanderBehaviour{};
+	TUniquePtr<BlendedSteering> BlendedBehaviour{};
 };

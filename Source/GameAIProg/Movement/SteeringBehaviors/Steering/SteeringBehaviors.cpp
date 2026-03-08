@@ -11,12 +11,31 @@
 SteeringOutput Seek::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 {
 	SteeringOutput steering{};
-	steering.LinearVelocity = Target.Position - Agent.GetPosition(); // Move directly toward target
 
-	// Debug rendering
+	FVector2D direction = Target.Position - Agent.GetPosition();
+
+	if (!direction.IsNearlyZero())
+	{
+		direction.Normalize();
+	}
+
+	steering.LinearVelocity = direction * Agent.GetMaxLinearSpeed();
+
 	if (Agent.GetDebugRenderingEnabled())
-		DrawDebugLine(Agent.GetWorld(), FVector(Agent.GetPosition(), 0), FVector(Target.Position, 0), FColor::Green, false, -1, 0, 2.f);
+	{
+		DrawDebugLine(
+			Agent.GetWorld(),
+			FVector(Agent.GetPosition(), 0),
+			FVector(Target.Position, 0),
+			FColor::Green,
+			false,
+			-1,
+			0,
+			2.f
+		);
+	}
 
+	steering.IsValid = true;
 	return steering;
 }
 
@@ -24,7 +43,9 @@ SteeringOutput Seek::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 SteeringOutput Flee::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 {
 	SteeringOutput steering{};
-	steering.LinearVelocity = Agent.GetPosition() - Target.Position;
+	FVector2D direction = Agent.GetPosition() - Target.Position;
+	direction.Normalize();
+	steering.LinearVelocity = direction * Agent.GetMaxLinearSpeed();
 	
 	// TODO maybe limit how far it runs and not just infinitly
 	
