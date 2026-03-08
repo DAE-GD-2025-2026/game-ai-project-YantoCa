@@ -12,14 +12,7 @@ SteeringOutput Seek::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 {
 	SteeringOutput steering{};
 
-	FVector2D direction = Target.Position - Agent.GetPosition();
-
-	if (!direction.IsNearlyZero())
-	{
-		direction.Normalize();
-	}
-
-	steering.LinearVelocity = direction * Agent.GetMaxLinearSpeed();
+	steering.LinearVelocity = Target.Position - Agent.GetPosition();
 
 	if (Agent.GetDebugRenderingEnabled())
 	{
@@ -44,9 +37,6 @@ SteeringOutput Flee::CalculateSteering(float DeltaT, ASteeringAgent& Agent)
 {
 	SteeringOutput steering{};
 	FVector2D direction = Agent.GetPosition() - Target.Position;
-	direction.Normalize();
-	steering.LinearVelocity = direction * Agent.GetMaxLinearSpeed();
-	
 	// TODO maybe limit how far it runs and not just infinitly
 	
 	if (Agent.GetDebugRenderingEnabled())

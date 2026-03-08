@@ -91,21 +91,10 @@ void ALevel_CombinedSteering::Tick(float DeltaTime)
 		if (ImGui::Checkbox("Debug Rendering", &CanDebugRender))
 		{
    // TODO: Handle the debug rendering of your agents here :)
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			//
+			if (IsValid(SeekAgent))
+				SeekAgent->SetDebugRenderingEnabled(!CanDebugRender);
+			if (IsValid(WanderAgent))
+				WanderAgent->SetDebugRenderingEnabled(!CanDebugRender);
 		}
 		ImGui::Checkbox("Trim World", &TrimWorld->bShouldTrimWorld);
 		if (TrimWorld->bShouldTrimWorld)
@@ -135,15 +124,6 @@ void ALevel_CombinedSteering::Tick(float DeltaTime)
 					[this](float InVal) { BlendedBehaviour->GetWeightedBehaviorsRef()[1].Weight = InVal; }, "%.2f");
 			}
 		}
-				
-		// ImGuiHelpers::ImGuiSliderFloatWithSetter("Seek",
-		// 	pBlendedSteering->GetWeightedBehaviorsRef()[0].Weight, 0.f, 1.f,
-		// 	[this](float InVal) { pBlendedSteering->GetWeightedBehaviorsRef()[0].Weight = InVal; }, "%.2f");
-		//
-		// ImGuiHelpers::ImGuiSliderFloatWithSetter("Wander",
-		// pBlendedSteering->GetWeightedBehaviorsRef()[1].Weight, 0.f, 1.f,
-		// [this](float InVal) { pBlendedSteering->GetWeightedBehaviorsRef()[1].Weight = InVal; }, "%.2f");
-	
 		//End
 		ImGui::End();
 	}
@@ -161,10 +141,10 @@ void ALevel_CombinedSteering::Tick(float DeltaTime)
 		SeekBehaviour->SetTarget(MouseTarget);
 	}
 
-	FTargetData WandererTarget;
-	WandererTarget.Position = WanderAgent->GetPosition();
-	WandererTarget.Orientation = WanderAgent->GetRotation();
-	WandererTarget.LinearVelocity = WanderAgent->GetLinearVelocity();
-	WandererTarget.AngularVelocity = WanderAgent->GetAngularVelocity();
-	EvadeBehaviour->SetTarget(WandererTarget);
+	FTargetData WanderTarget;
+	WanderTarget.Position = WanderAgent->GetPosition();
+	WanderTarget.Orientation = WanderAgent->GetRotation();
+	WanderTarget.LinearVelocity = WanderAgent->GetLinearVelocity();
+	WanderTarget.AngularVelocity = WanderAgent->GetAngularVelocity();
+	EvadeBehaviour->SetTarget(WanderTarget);
 }

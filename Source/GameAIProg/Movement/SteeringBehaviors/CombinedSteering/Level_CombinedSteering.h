@@ -29,7 +29,7 @@ protected:
 
 private:
 	//Datamembers
-	bool UseMouseTarget = false;
+	bool UseMouseTarget = true;
 	bool CanDebugRender = false;
 
 	ASteeringAgent* SeekAgent = nullptr;

@@ -38,19 +38,14 @@ SteeringOutput Separation::CalculateSteering(float DeltaT, ASteeringAgent& Agent
 
 		if (distance > 0.001f)
 		{
-			// direction away from neighbor
 			FVector2D direction = toAgent / distance;
-
-			// inverse distance weighting (1/x)
-			separationForce += direction / distance;
+			separationForce += direction;
 		}
 	}
 
-	// average the force
 	separationForce /= static_cast<float>(neighborCount);
 
-	// scale to max speed
-	steering.LinearVelocity = separationForce.GetSafeNormal() * Agent.GetMaxLinearSpeed();
+	steering.LinearVelocity = separationForce * Agent.GetMaxLinearSpeed();
 	steering.IsValid = true;
 
 	return steering;

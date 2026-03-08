@@ -76,10 +76,11 @@ SteeringOutput PrioritySteering::CalculateSteering(float DeltaT, ASteeringAgent&
 
 	for (ISteeringBehavior* const pBehavior : m_PriorityBehaviors)
 	{
+		if (!pBehavior) continue;
 		Steering = pBehavior->CalculateSteering(DeltaT, Agent);
 
 		if (Steering.IsValid)
-			break;
+			return Steering;
 	}
 
 	//If non of the behavior return a valid output, last behavior is returned
